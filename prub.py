@@ -10,12 +10,22 @@ class MapSafeFood:
 	ICON_CONFIG = {'icon': POINT_ICON,
 				   'color': POINT_COLOR}
 				   
+	POPUP_TEXT = 'Non Data'
+	TOOLTIP_TEXT = 'Information'
+				   
 	LINES_COLOR = 'darkblue'
+	
+	N_ARROWS = 3
+	ARROWS_COLOR = 'black'
+	ARROWS_FILL_COLOR = 'darkred'
+	ARROWS_SIDES = 3
+	ARROWS_SIZE = 10
 
 	def __init__(self, location:tuple, zoom_start:int =ZOOM, tiles:str =TILES, **options) -> None:
 		self.__mapp = folium.Map(location=location, zoom_start=zoom_start, tiles=tiles, **options)
 	
-	def add_points(self, points:list , popup:str ='Non Data', tooltip:str ='Information',icon_config:dict =ICON_CONFIG, **options) -> None:
+	def add_points(self, points:list , popup:str = POPUP_TEXT, tooltip:str = TOOLTIP_TEXT, 
+				   icon_config:dict = ICON_CONFIG, **options) -> None:
 		for point in points:
 			folium.Marker(point,
 						  popup=popup,
@@ -26,14 +36,18 @@ class MapSafeFood:
 	def add_lines(self, line:tuple, color:str =LINES_COLOR, **options) -> None:
 		folium.PolyLine(line, color=color, **options).add_to(self.__mapp)
 			
-	def add_arrows(self, line:tuple, n_arrows:int = 3, color = 'black', fill_color='red', 
-				  number_of_sides=3, radius=10, rotation=180, **options) -> None:
+	#Ajustar la rotación.
+	def add_arrows(self, line:tuple, n_arrows:int = N_ARROWS, color = ARROWS_COLOR, 
+			fill_color = ARROWS_FILL_COLOR, number_of_sides=ARROWS_SIDES, radius=ARROWS_SIZE,
+			rotation=180, **options) -> None:
+		
 		loc_arrows = zip(np.linspace(line[0][0], line[1][0], n_arrows+2)[1:n_arrows+1],
 						 np.linspace(line[0][1], line[1][1], n_arrows+2)[1:n_arrows+1])
 
 		for loc_arrow in loc_arrows:
-			folium.RegularPolygonMarker(location=loc_arrow, color=color, fill_color=fill_color, number_of_sides=number_of_sides, 
-				radius=radius, rotation=rotation, **options).add_to(self.__mapp)		
+			folium.RegularPolygonMarker(location=loc_arrow, color=color, fill_color=fill_color, 
+				number_of_sides=number_of_sides, radius=radius, rotation=rotation, **options
+				).add_to(self.__mapp)		
 	
 	def add_arrows_lines(self, lines:tuple, **options) -> None:
 		for line in lines:
@@ -43,8 +57,7 @@ class MapSafeFood:
 	@property
 	def get_map(self):
 		return self.__mapp
-		
-		
+
 	def save(self, name:str) -> None:
 		self.__mapp.save(f'{name}.html')
 
