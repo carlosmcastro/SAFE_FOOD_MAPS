@@ -13,4 +13,4 @@ Sample Command Line:
 
     MapCline.py "(41.257160, -95.995102)" "((41.257160, -95.995102), (41.357160, -95.895102), (41.157160, -95.795102))" "(((41.257160, -95.995102), (41.357160, -95.895102)), ((41.357160, -95.895102), (41.157160, -95.795102)) )" "hola" "{'opt_points': {'popup': 'Data of BlockChain'}}"
 
-Strucuture: {Origin} {Points} {Nodes} {Archive_Name} {Aditional_Options}
+Strucuture: {Origin} {Points} {Nodes} {Archive_Name} {Aditional_Options (JSON_FORMAT)}
