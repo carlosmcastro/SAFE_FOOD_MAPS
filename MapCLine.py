@@ -1,6 +1,6 @@
 import argparse
 import string, json
-from MapFuncs import generate_map
+from MapCreator.MapFuncs import generate_map
 
 #We clean up the data, to prevent improper executions
 #For tuples
