@@ -3,7 +3,7 @@ Generation of maps for connections between nodes
 
 MapCLine.py: Script for command line access.
 
-MapCreator
+MapCreator:
 
     MapClasses.py:	Classes for the generation of maps.
 
