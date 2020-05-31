@@ -23,10 +23,12 @@ class MapSafeFood:
 	ARROWS_SIZE = 10
 
 	def __init__(self, location:tuple, zoom_start:int = ZOOM, tiles:str =TILES, **options) -> None:
+		#We locate the map, and give them an initial design and zoom.
 		self.__mapp = folium.Map(location=location, zoom_start=zoom_start, tiles=tiles, **options)
 	
 	def add_points(self, points:list , popup:str = POPUP_TEXT, tooltip:str = TOOLTIP_TEXT, 
 				   icon_config:dict = ICON_CONFIG, **options) -> None:
+		#Points, icon, message on mouse over, and click.
 		for point in points:
 			folium.Marker(point,
 						  popup=popup,
@@ -38,34 +40,38 @@ class MapSafeFood:
 		folium.PolyLine(line, color=color, **options).add_to(self.__mapp)
 			
 	#Ajustar la rotación.
-	def add_arrows(self, line:tuple, n_arrows:int = N_ARROWS, color = ARROWS_COLOR, 
-			fill_color = ARROWS_FILL_COLOR, number_of_sides=ARROWS_SIDES, radius=ARROWS_SIZE,
+	def add_arrows(self, line:tuple, n_arrows:int = N_ARROWS, color:str = ARROWS_COLOR, 
+			fill_color:str = ARROWS_FILL_COLOR, number_of_sides:int =ARROWS_SIDES, radius:int =ARROWS_SIZE,
 			rotation=180, **options) -> None:
 		
+		#n number of halfway arrows, (x, y)
 		loc_arrows = zip(np.linspace(line[0][0], line[1][0], n_arrows+2)[1:n_arrows+1],
 						 np.linspace(line[0][1], line[1][1], n_arrows+2)[1:n_arrows+1])
 
+		#We plot the triangles/arrows
 		for loc_arrow in loc_arrows:
 			folium.RegularPolygonMarker(location=loc_arrow, color=color, fill_color=fill_color, 
 				number_of_sides=number_of_sides, radius=radius, rotation=rotation, **options
 				).add_to(self.__mapp)		
 	
+	#The options in this case is a dictionary with the options of lines and arrows
 	def add_arrows_lines(self, lines:tuple, **options) -> None:
 		for line in lines:
 			self.add_lines(line, **options.get('line', {}))
 			self.add_arrows(line, **options.get('arrow', {}))
 		
+	#We saved the map in HTML format
+	def save(self, name:str) -> None:
+		self.__mapp.save(f'{name}.html')
+	
+	#Getter of the map.
 	@property
 	def get_map(self) -> folium.Map:
 		return self.__mapp
 
-	def save(self, name:str) -> None:
-		self.__mapp.save(f'{name}.html')
-
-
 	
 """
-#Caso de prueba.
+#Samples Cases.
 if __name__ == '__main__':
 
 #	a = MapSafeFood(location=(41.257160, -95.995102), **{})
@@ -75,16 +81,12 @@ if __name__ == '__main__':
 
 #	a.AddArrowsLines([puntos[:-1], puntos[1:]])
 
-#	a.save('hola')
+#	a.save('Case1')
 
 	
 	puntos = ((41.257160, -95.995102), (41.357160, -95.895102), (41.157160, -95.795102))
-	mapa = generate_map((41.257160, -95.995102), puntos, (puntos[:-1], puntos[1:]), 'hola', 
+	mapa = generate_map((41.257160, -95.995102), puntos, (puntos[:-1], puntos[1:]), 'Case2', 
 				 **{'opt_points': {'popup': 'Data of BlockChain'}})
+
 	print(mapa, type(mapa))
 """
-
-
-
-
-
