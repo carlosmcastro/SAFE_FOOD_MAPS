@@ -41,12 +41,15 @@ class MapSafeFood:
 			
 	#Ajustar la rotación.
 	def add_arrows(self, line:tuple, n_arrows:int = N_ARROWS, color:str = ARROWS_COLOR, 
-			fill_color:str = ARROWS_FILL_COLOR, number_of_sides:int =ARROWS_SIDES, radius:int =ARROWS_SIZE,
-			rotation=180, **options) -> None:
+			fill_color:str = ARROWS_FILL_COLOR, number_of_sides:int =ARROWS_SIDES, 
+			radius:int =ARROWS_SIZE, **options) -> None:
 		
 		#n number of halfway arrows, (x, y)
 		loc_arrows = zip(np.linspace(line[0][0], line[1][0], n_arrows+2)[1:n_arrows+1],
 						 np.linspace(line[0][1], line[1][1], n_arrows+2)[1:n_arrows+1])
+						 
+		#The rotated arrow following the direction of the origin line.
+		rotation = self.concordant_rotation(line[0], line[1]) - 90
 
 		#We plot the triangles/arrows
 		for loc_arrow in loc_arrows:
@@ -68,6 +71,26 @@ class MapSafeFood:
 	@property
 	def get_map(self) -> folium.Map:
 		return self.__mapp
+		
+	@staticmethod
+	def concordant_rotation(p1, p2):
+	#Based on https://gist.github.com/jeromer/2005586
+	
+		long_diff = np.radians(p2[1] - p1[1])
+		
+		lat1 = np.radians(p1[0])
+		lat2 = np.radians(p2[0])
+		
+		x = np.sin(long_diff) * np.cos(lat2)
+		y = (np.cos(lat1) * np.sin(lat2) 
+			- (np.sin(lat1) * np.cos(lat2) 
+			* np.cos(long_diff)))
+		bearing = np.degrees(np.arctan2(x, y))
+		
+		#Adjusting for compass bearing	
+		if bearing < 0:
+			return bearing + 360
+		return bearing
 
 	
 """
