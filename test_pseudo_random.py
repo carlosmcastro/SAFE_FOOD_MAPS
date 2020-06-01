@@ -4,7 +4,7 @@ from MapCreator.MapFuncs import generate_map
 #Random' coordinates near the central point.
 def random_acot_point(point, n):
 	points = [(point[0]+random.randrange(1, 2*n)/10, point[1]+random.randrange(1, 2*n)/10) for _ in range(n)]
-	points = tuple(set(points))
+	points = tuple(set(points+[point]))
 	return points
 	
 #Sequential and random node connection.
@@ -23,7 +23,7 @@ if __name__ == '__main__':
 	
 	points = random_acot_point(punto, 15)
 	nodes = aleatore_nodes(points, 1)
-
+	
 	#test
 	generate_map(punto, points, nodes, 'Test')
 	
