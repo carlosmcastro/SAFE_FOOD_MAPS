@@ -3,7 +3,9 @@ from MapCreator.MapFuncs import generate_map
 
 #Random' coordinates near the central point.
 def random_acot_point(point, n):
-	points = [(point[0]+random.randrange(1, 2*n)/10, point[1]+random.randrange(1, 2*n)/10) for _ in range(n)]
+	points = [(point[0]+random.choices([-1, 1])[0]*random.randrange(1, 2*n)/10, 
+			   point[1]+random.choices([-1, 1])[0]*random.randrange(1, 2*n)/10) 
+			   for _ in range(n)]
 	points = tuple(set(points+[point]))
 	return points
 	
